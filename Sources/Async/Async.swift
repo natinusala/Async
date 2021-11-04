@@ -727,33 +727,6 @@ private enum QoSClassDescription: String {
     case unknown = "Unknown"
 }
 
-// MARK: - Extension for `qos_class_t`
-
-/**
-Extension to add description string for each quality of service class.
-*/
-public extension qos_class_t {
-
-    /**
-     Description of the `qos_class_t`. E.g. "Main", "User Interactive", etc. for the given Quality of Service class.
-     */
-    var description: String {
-        let result: QoSClassDescription
-        switch self {
-        case qos_class_main(): result = .main
-        case DispatchQoS.QoSClass.userInteractive.rawValue: result = .userInteractive
-        case DispatchQoS.QoSClass.userInitiated.rawValue: result = .userInitiated
-        case DispatchQoS.QoSClass.default.rawValue: result = .default
-        case DispatchQoS.QoSClass.utility.rawValue: result = .utility
-        case DispatchQoS.QoSClass.background.rawValue: result = .background
-        case DispatchQoS.QoSClass.unspecified.rawValue: result = .unspecified
-        default: result = .unknown
-        }
-        return result.rawValue
-    }
-}
-
-
 // MARK: - Extension for `DispatchQueue.GlobalAttributes`
 
 /**
@@ -764,14 +737,12 @@ public extension DispatchQoS.QoSClass {
     var description: String {
         let result: QoSClassDescription
         switch self {
-        case DispatchQoS.QoSClass(rawValue: qos_class_main())!: result = .main
         case .userInteractive: result = .userInteractive
-        case .userInitiated: result = .userInitiated
+        case .userInitiated: result = .main
         case .default: result = .default
         case .utility: result = .utility
         case .background: result = .background
         case .unspecified: result = .unspecified
-        @unknown default: result = .unknown
         }
         return result.rawValue
     }
